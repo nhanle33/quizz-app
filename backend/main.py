@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+import sqlite3
+import os
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -12,6 +14,27 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+DB_FILE = "database.db"
+
+def init_db():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            username TEXT PRIMARY KEY,
+            password TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Initialize the database on startup
+init_db()
+
+class User(BaseModel):
+    username: str
+    password: str
 
 questions_db = [
     {
@@ -90,3 +113,37 @@ def submit_answers(request: SubmitRequest):
         "total": total,
         "results": results
     }
+
+@app.post("/register")
+def register(user: User):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    # Check if username exists
+    cursor.execute("SELECT username FROM users WHERE username = ?", (user.username,))
+    if cursor.fetchone():
+        conn.close()
+        raise HTTPException(status_code=400, detail="Username already registered")
+        
+    if not user.username or not user.password:
+        conn.close()
+        raise HTTPException(status_code=400, detail="Username and password are required")
+        
+    cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (user.username, user.password))
+    conn.commit()
+    conn.close()
+    return {"message": "User registered successfully"}
+
+@app.post("/login")
+def login(user: User):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT password FROM users WHERE username = ?", (user.username,))
+    row = cursor.fetchone()
+    conn.close()
+    
+    if not row or row[0] != user.password:
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+        
+    return {"message": "Login successful", "username": user.username}

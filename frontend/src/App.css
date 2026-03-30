@@ -15,6 +15,7 @@
   font-weight: 800;
   background: linear-gradient(to right, #a855f7, #ec4899);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   margin-bottom: 0.5rem;
 }
@@ -22,6 +23,10 @@
 .rocket {
   display: inline-block;
   animation: float 3s ease-in-out infinite;
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: initial;
+  color: initial;
 }
 
 .subtitle {
@@ -58,8 +63,62 @@
   line-height: 1.6;
 }
 
+/* Auth Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #a855f7;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+}
+
+.user-topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
 /* Buttons */
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
   font-weight: 600;
@@ -314,48 +373,102 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-.mt-2 { margin-top: 0.5rem; }
-.mt-4 { margin-top: 2rem; }
-.pb-8 { padding-bottom: 2rem; }
-.text-center { text-align: center; }
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.pb-8 {
+  padding-bottom: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 @keyframes scaleIn {
-  from { transform: scale(0); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.fade-in { animation: fadeIn 0.6s ease-out forwards; }
-.slide-up { 
-  opacity: 0;
-  animation: slideUp 0.6s ease-out forwards; 
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
 }
+
+.slide-up {
+  opacity: 0;
+  animation: slideUp 0.6s ease-out forwards;
+}
+
 .pulse:hover {
   animation: buttonPulse 1s infinite alternate;
 }
 
 @keyframes buttonPulse {
-  0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
-  100% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+  }
+
+  100% {
+    box-shadow: 0 0 0 10px rgba(168, 85, 247, 0);
+  }
 }
